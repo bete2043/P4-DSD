@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="uft-8">
+        <title>Connections</title>
+    </head>
+    <body>
+        <span id="mensaje_servicio"></span>
+        <div id="lista_usuarios"></div>
+    </body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        function mostrar_mensaje(msg) {
+            const span_msg = document.getElementById('mensaje_servicio');
+            span_msg.textContent = msg;
+        }
+
+        function actualizarLista(usuarios) {
+            const listCont = document.getElementById('lista_usuarios');
+            while(listCont.firstChild && listCont.removeChild(listCont.firstChild));
+
+            const listElement = document.createElement('ul');
+            listCont.appendChild(listElement);
+
+            const num = usuarios.length;           
+            for(var i=0; i<num; i++) {
+                const listItem = document.createElement('li');
+                listItem.textContent = usuarios[i].address + ':' + usuarios[i].port;
+                listElement.appendChild(listItem);
+            }
+        }
+
+        const serviceURL = document.URL;
+        const socket = io(serviceURL);
+        socket.on('connect', () => {
+            socket.emit('output-evt', 'Hola Servicio!');
+        });
+        socket.on('output-evt', (data) => {
+            mostrar_mensaje('Mensaje de servicio: ' + data);
+        });
+        socket.on('all-connections', (data) => {
+            actualizarLista(data);
+        });
+        socket.on('disconnect', () => {
+            mostrar_mensaje('El servicio ha dejado de funcionar!!');
+        });
+    </script>
+</html>

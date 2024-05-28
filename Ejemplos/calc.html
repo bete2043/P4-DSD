@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="uft-8">
+        <title>Calculadora</title>
+    </head>
+    <body>
+        <form id="calculadora">
+            Valor1: <input type="label" id="val1"><br>
+            Valor2: <input type="label" id="val2"><br>
+            Operación:
+            <select id="operacion">
+                <option value="sumar">Sumar</option>
+                <option value="restar">Restar</option>
+                <option value="producto">Producto</option>
+                <option value="dividir">Dividir</option>
+            </select><br>
+            <input type="submit" value="Calcular">
+        </form>
+        <span id="resultado"></span>
+    </body>
+    <script type="text/javascript">
+        const calc = document.getElementById('calculadora');
+
+        calc.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const serviceURL = document.URL;
+            const val1 = document.getElementById('val1').value;
+            const val2 = document.getElementById('val2').value;
+            const oper = document.getElementById('operacion').value;			
+            const url  = serviceURL + oper + '/' + val1 + '/' +val2;
+
+            fetch(url)
+            .then(response => response.text())
+            .then(response => {
+                let resultado = document.getElementById('resultado');
+                resultado.textContent = response;
+            });
+        });
+    </script>
+</html>

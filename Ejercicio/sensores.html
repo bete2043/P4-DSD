@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="uft-8">
+        <title>Sensores</title>
+        
+    </head>
+
+    <body>
+        <h1>SENSORES</h1>
+        <form id="sensores">
+            Temperatura: <input type=”label” id="temp"><br>
+            Luminosidad: <input type="label" id="luz"><br>
+            Humo: <input type="label" id="humo"><br>
+            <input type="submit" value="Enviar">
+        </form>
+
+        <h2>Estado de los actuadores</h2>
+        <div>Aire: <span id="aire"></span></div>
+        <div>Persiana: <span id="persiana"></span></div>       
+        <div>Detector de humo: <span id="detectorhumo"></span></div>       
+
+
+    </body>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+
+    const serviceURL = document.URL;
+    const socket = io(serviceURL );
+
+
+    const sensor= document.getElementById('sensores');
+    sensor.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const temp= document.getElementById('temp').value;
+        const luz= document.getElementById('luz').value;
+        const humo= document.getElementById('humo').value;
+        socket.emit('datos', { temperatura: temp, luminosidad: luz, humo: humo });
+    });
+
+    document.getElementById('aire').textContent = "APAGADO POR DEFECTO";
+    document.getElementById('persiana').textContent =" CERRADA POR DEFECTO";
+    document.getElementById('detectorhumo').textContent =" APAGADO POR DEFECTO";
+
+    socket.on('datos-luz', (data) => {
+        console.log('Datos del sistea recibidos:', data);
+        document.getElementById('persiana').textContent = data;
+    });
+
+    socket.on('datos-temp', (data) => {
+        console.log('Datos del sistea recibidos:', data);
+        document.getElementById('aire').textContent = data;
+    });
+
+    socket.on('datos-humo', (data) => {
+        console.log('Datos del sistea recibidos:', data);
+        document.getElementById('detectorhumo').textContent = data;
+    });
+
+
+
+</script>
+</html>

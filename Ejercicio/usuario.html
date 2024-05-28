@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=”uft-8”>
+        <title>Usuario</title>
+    </head>
+
+    <body>
+        <h1>USUARIO</h1>
+        <h2>Datos de los Sensores</h2>
+        <div>Temperatura: <span id="temp"></span></div>
+        <div>Luminosidad: <span id="luz"></span></div>
+        <div>Humo: <span id="humo"></span></div>
+
+        <h2>Modificar los actuadores</h2>
+        <form id="sensor-luz">
+            Persiana:
+            <select id="persiana">
+                <option value="Abierta">Abierta</option>
+                <option value="Cerrada">Cerrada</option>
+            </select>
+            <input type="submit" value="Enviar">
+        </form>
+
+        <form id="sensor-temp">
+            Aire acondicionado:
+            <select id="aire">
+                <option value="ON">Encender</option><br>
+                <option value="OFF">Apagar</option><br>
+            </select>
+
+            <input type="submit" value="Enviar">
+        </form>
+
+        <form id="sensor-humo">
+            Detecor de humo:
+            <select id="sensorhumo">
+                <option value="ON">Encender</option><br>
+                <option value="OFF">Apagar</option><br>
+            </select>
+
+            <input type="submit" value="Enviar">
+        </form>
+
+        <h2>Histórico de eventos</h2>
+        <ul id ="historico"></ul>
+
+        <h2>Clientes</h2>
+            <div id="resultados"></div>
+        
+        <h2>Alarmas</h2>
+            <ul id="alarmas"></ul>
+
+    </body>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+
+        let serviceURL = document.URL;
+        serviceURL = serviceURL.replace('/usuario', '');
+
+        const socket = io(serviceURL );
+
+        socket.on('datos-sensores', (data) => {
+            console.log('Datos de los sensores recibidos:', data);
+            document.getElementById('temp').textContent = data.temperatura;
+            document.getElementById('luz').textContent = data.luminosidad;
+            document.getElementById('humo').textContent = data.humo;
+
+            const listElement = document.createElement('ul');
+            listElement.textContent = `Luminosidad: ${data.luminosidad} , Temperatura: ${data.temperatura} , Humo: ${data.humo}`;
+            document.getElementById('historico').appendChild(listElement);
+
+
+        });
+
+        function actualizarLista(usuarios) {
+            const listCont = document.getElementById('resultados');
+            while(listCont.firstChild && listCont.removeChild(listCont.firstChild));
+
+            const listElement = document.createElement('ul');
+            listCont.appendChild(listElement);
+
+            const num = usuarios.length;
+            for(var i=0; i<num; i++) {
+                const listItem = document.createElement('li');
+                listItem.textContent = JSON.stringify(usuarios[i]);
+                listElement.appendChild(listItem);
+            }
+        }
+
+        socket.on('my-address', (data) => {
+            var d = new Date();
+            socket.emit('poner', {host:data.host, port:data.port, time:d});
+            socket.emit('obtener', {host:data.host});
+        });
+
+        socket.on('obtener', (data) => {actualizarLista(data);});
+        socket.on('disconnect', ()  => {actualizarLista({});});
+
+        const sensor= document.getElementById('sensor-luz');
+        sensor.addEventListener('submit', (e) => {
+            e.preventDefault();
+            socket.emit('sensor-luz', document.getElementById('persiana').value);
+        });
+
+        const sensor1= document.getElementById('sensor-temp');
+        sensor1.addEventListener('submit', (e) => {
+            e.preventDefault();
+            socket.emit('sensor-temp', document.getElementById('aire').value);
+        });
+
+        const sensor2= document.getElementById('sensor-humo');
+        sensor2.addEventListener('submit', (e) => {
+            e.preventDefault();
+            socket.emit('sensor-humo', document.getElementById('sensorhumo').value);
+        });
+
+
+        function agregarAlarma(mensaje) {
+            const ul = document.getElementById('alarmas');
+            const li = document.createElement('li');
+            li.textContent = mensaje;
+            ul.appendChild(li);
+        }
+
+        socket.on('alarma-luz-alta', (data) => {
+            console.log('Datos del sistea recibidos:', data);
+            agregarAlarma(data);
+        });
+
+        socket.on('alarma-luz-baja', (data) => {
+            console.log('Datos del sistea recibidos:', data);
+            agregarAlarma(data);
+        });
+
+        socket.on('alarma-temp-alta', (data) => {
+            console.log('Datos del sistea recibidos:', data);
+            agregarAlarma(data);
+        });
+
+        socket.on('alarma-temp-baja', (data) => {
+            console.log('Datos del sistea recibidos:', data);
+            agregarAlarma(data);
+        });
+
+        socket.on('alarma-humo-alto', (data) => {
+            console.log('Datos del sistea recibidos:', data);
+            agregarAlarma(data);
+        });
+
+        socket.on('alarma-humo-bajo', (data) => {
+            console.log('Datos del sistea recibidos:', data);
+            agregarAlarma(data);
+        });
+
+
+    </script>
+</html>

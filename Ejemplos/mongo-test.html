@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="uft-8">
+        <title>MongoDB Test</title>
+    </head>
+    <body>
+        <div id="resultados"></div>
+    </body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+        function actualizarLista(usuarios) {
+            const listCont = document.getElementById('resultados');
+            while(listCont.firstChild && listCont.removeChild(listCont.firstChild));
+
+            const listElement = document.createElement('ul');
+            listCont.appendChild(listElement);
+
+            const num = usuarios.length;
+            for(var i=0; i<num; i++) {
+                const listItem = document.createElement('li');
+                listItem.textContent = JSON.stringify(usuarios[i]);
+                listElement.appendChild(listItem);
+            }
+        }
+
+        const serviceURL = document.URL;
+        const socket = io(serviceURL);		
+        socket.on('my-address', (data) => {
+            var d = new Date();
+            socket.emit('poner', {host:data.host, port:data.port, time:d});
+            socket.emit('obtener', {host:data.host});
+        });
+        socket.on('obtener', (data) => {actualizarLista(data);});
+        socket.on('disconnect', ()  => {actualizarLista({});});
+    </script>
+</html>
