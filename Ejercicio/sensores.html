@@ -3,22 +3,88 @@
     <head>
         <meta charset="uft-8">
         <title>Sensores</title>
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 20px;
+            }
+    
+            h1, h2 {
+                text-align: center;
+                color: #333;
+            }
+    
+            form {
+                width: 50%;
+                margin: 0 auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+    
+            input[type="label"] {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                font-size: 16px;
+                width: 100%;
+                box-sizing: border-box;
+                margin-bottom: 10px;
+            }
+    
+            input[type="submit"] {
+                cursor: pointer;
+                background-color: #20b531;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+    
+            input[type="submit"]:hover {
+                background-color: #1c9029;
+            }
+    
+            #actuadores {
+                width: 50%;
+                margin: 20px auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+    
+            #actuadores div {
+                margin-bottom: 10px;
+            }
+    
+            #actuadores span {
+                font-weight: bold;
+            }
+        </style>
         
     </head>
 
     <body>
         <h1>SENSORES</h1>
         <form id="sensores">
-            Temperatura: <input type=”label” id="temp"><br>
+            Temperatura: <input type="label" id="temp"><br>
             Luminosidad: <input type="label" id="luz"><br>
             Humo: <input type="label" id="humo"><br>
             <input type="submit" value="Enviar">
         </form>
 
         <h2>Estado de los actuadores</h2>
-        <div>Aire: <span id="aire"></span></div>
-        <div>Persiana: <span id="persiana"></span></div>       
-        <div>Detector de humo: <span id="detectorhumo"></span></div>       
+        <div id="actuadores">
+            <div>Aire: <span id="aire"></span></div>
+            <div>Persiana: <span id="persiana"></span></div>       
+            <div>Detector de humo: <span id="detectorhumo"></span></div>       
+        </div>    
 
 
     </body>

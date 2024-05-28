@@ -3,53 +3,171 @@
     <head>
         <meta charset=”uft-8”>
         <title>Usuario</title>
+        <style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #333;
+}
+
+.container {
+    width: 45%;
+    background-color: #fff;
+    height: 200px;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container2 {
+    width: 45%;
+    height: 200px;
+    background-color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.container1 {
+    width: auto;
+    height: 200px;
+    overflow-y: auto;
+    background-color: #fff;
+    margin-top: 50px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fila1, .histo-client {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.container div, .container1,.container2 div {
+    margin-bottom: 10px;
+}
+
+.medio{text-align: center;}
+
+select, input[type="submit"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+select {
+    width: 150px;
+}
+
+input[type="submit"] {
+    cursor: pointer;
+    background-color: #20b531;
+    color: #fff;
+    border: none;
+}
+
+input[type="submit"]:hover {
+    background-color: #1c9029;
+}
+
+#historico li, #alarmas li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+        </style>
     </head>
 
     <body>
-        <h1>USUARIO</h1>
-        <h2>Datos de los Sensores</h2>
-        <div>Temperatura: <span id="temp"></span></div>
-        <div>Luminosidad: <span id="luz"></span></div>
-        <div>Humo: <span id="humo"></span></div>
-
-        <h2>Modificar los actuadores</h2>
-        <form id="sensor-luz">
-            Persiana:
-            <select id="persiana">
-                <option value="Abierta">Abierta</option>
-                <option value="Cerrada">Cerrada</option>
-            </select>
-            <input type="submit" value="Enviar">
-        </form>
-
-        <form id="sensor-temp">
-            Aire acondicionado:
-            <select id="aire">
-                <option value="ON">Encender</option><br>
-                <option value="OFF">Apagar</option><br>
-            </select>
-
-            <input type="submit" value="Enviar">
-        </form>
-
-        <form id="sensor-humo">
-            Detecor de humo:
-            <select id="sensorhumo">
-                <option value="ON">Encender</option><br>
-                <option value="OFF">Apagar</option><br>
-            </select>
-
-            <input type="submit" value="Enviar">
-        </form>
-
-        <h2>Histórico de eventos</h2>
-        <ul id ="historico"></ul>
-
-        <h2>Clientes</h2>
-            <div id="resultados"></div>
+        <h1>Panel de Usuario</h1>
         
-        <h2>Alarmas</h2>
-            <ul id="alarmas"></ul>
+        <div class="fila1">
+            <div class="container">
+                <h2>Datos de los Sensores</h2>
+                <div>
+                    <label for="temp">Temperatura:</label>
+                    <span id="temp"></span>
+                </div>
+                <div>
+                    <label for="luz">Luminosidad:</label>
+                    <span id="luz"></span>
+                </div>
+                <div>
+                    <label for="humo">Humo:</label>
+                    <span id="humo"></span>
+                </div>
+            </div>
+            
+            <div class="container">
+                <h2>Modificar los Actuadores</h2>
+                <div class="medio">
+                    <div>
+                        <form id="sensor-luz">
+                            <label for="persiana">Persiana:</label>
+                            <select id="persiana">
+                                <option value="Abierta">Abierta</option>
+                                <option value="Cerrada">Cerrada</option>
+                            </select>
+                            <input type="submit" value="Enviar">
+                        </form>
+                    </div>
+        
+                    <div>
+                        <form id="sensor-temp">
+                            <label for="aire">Aire Acondicionado:</label>
+                            <select id="aire">
+                                <option value="ON">Encender</option>
+                                <option value="OFF">Apagar</option>
+                            </select>
+                            <input type="submit" value="Enviar">
+                        </form>
+                    </div>
+        
+                    <div>
+                        <form id="sensor-humo">
+                            <label for="sensorhumo">Detector de Humo:</label>
+                            <select id="sensorhumo">
+                                <option value="ON">Encender</option>
+                                <option value="OFF">Apagar</option>
+                            </select>
+                            <input type="submit" value="Enviar">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+            
+        <div class="fila1">
+            <div class="container2">
+                <h2>Histórico de Eventos</h2>
+                <ul id="historico"></ul>
+            </div>
+            
+            <div class="container2">
+                <h2>Alarmas</h2>
+                <ul id="alarmas"></ul>
+            </div>
+        </div>
+        
+        <div class="container1">
+            <h2>Clientes Conectados</h2>
+            <div id="resultados"></div>
+        </div>    
 
     </body>
 
